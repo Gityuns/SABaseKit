@@ -40,8 +40,5 @@ TODO: Add long description of the pod here.
   s.dependency 'Masonry','~>1.1.0'
   s.dependency 'MJExtension', '~>3.4.1'
   s.dependency 'SVProgressHUD'
-  s.dependency 'TZImagePickerController'
   s.dependency 'MJRefresh', '~>3.7.5'
-  s.dependency 'HUPhotoBrowser', '~>1.4.5'
-  s.dependency 'QMUIKit', '~>4.3.0'
 end

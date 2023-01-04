@@ -23,7 +23,7 @@
 #import "UIColor+RGBA.h"
 #import "UIView+Frame.h"
 #import "UIView+Radius.h"
-#import "NSObject+Identifier.h"
+#import "NSObject+ReuseIdentifer.h"
 #import "NSFileManager+Path.h"
 #import "NSTimer+SAProxy.h"
 

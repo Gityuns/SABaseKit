@@ -7,7 +7,6 @@
 //
 
 @import UIKit;
-@import SABaseKit;
 
 @interface CellModel : NSObject
 
@@ -20,6 +19,6 @@
 
 @end
 
-@interface ASTableViewCell : UITableViewCell<TableViewCellProtocol>
+@interface ASTableViewCell : UITableViewCell
 
 @end

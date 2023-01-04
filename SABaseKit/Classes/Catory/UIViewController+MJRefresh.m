@@ -42,17 +42,17 @@ static const char * footerLoadMore = "enableFooterLoadMore";
 
 
 -(void)configHeaderRefresh{
-    if (self.tableView == nil) {
-        return;
+    if (self.scrollType == 0 ) {
+        self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(mj_refresh)];
+    }else{
+        
     }
-    self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(mj_refresh)];
 }
 
 -(void)configFooterLoadMore{
-    if (self.tableView == nil) {
-        return;
+    if (self.scrollType == 0) {
+        self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(mj_loadMore)];;
     }
-    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(mj_loadMore)];
 }
 
 
@@ -64,16 +64,4 @@ static const char * footerLoadMore = "enableFooterLoadMore";
     
 }
 
--(void)mj_endRefresh{
-    if (self.tableView.mj_header) {
-        [self.tableView.mj_header endRefreshing];
-    }
-    if (self.tableView.mj_footer) {
-        if (self.datas.count % pageSize != 0) {
-            [self.tableView.mj_footer endRefreshingWithNoMoreData];
-        }else{
-            [self.tableView.mj_footer endRefreshing];
-        }
-    }
-}
 @end

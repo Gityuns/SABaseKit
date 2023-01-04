@@ -6,61 +6,100 @@
 //
 
 #import "UIViewController+UITableView.h"
+#import "NSObject+ReuseIdentifer.h"
 #import <objc/runtime.h>
 
 @implementation UIViewController (UITableView)
 
+#pragma mark - runtime property
 -(UITableView *)tableView{
-    return (UITableView *)objc_getAssociatedObject(self, "tableView");
+    UITableView *tableView = (UITableView *)objc_getAssociatedObject(self, "tableView");
+    if (tableView == nil) {
+        tableView = [[UITableView alloc]initWithFrame:self.tableFrame];
+        tableView.delegate = self;
+        tableView.dataSource = self;
+        self.tableView = tableView;
+    }
+    return tableView;
 }
 
 -(void)setTableView:(UITableView *)tableView{
     objc_setAssociatedObject(self, "tableView", tableView, OBJC_ASSOCIATION_RETAIN);
 }
 
--(NSMutableArray *)datas{
-    return (NSMutableArray *)objc_getAssociatedObject(self, "datas");
+-(void)setViewModel:(SABaseViewModel *)viewModel{
+    objc_setAssociatedObject(self, "viewModel", viewModel, OBJC_ASSOCIATION_RETAIN);
 }
 
--(void)setDatas:(NSMutableArray *)datas{
-    objc_setAssociatedObject(self, "datas", datas, OBJC_ASSOCIATION_RETAIN);
+-(SABaseViewModel *)viewModel{
+    return (SABaseViewModel *)objc_getAssociatedObject(self, "viewModel");
+}
+
+-(CGRect)tableFrame{
+    return self.view.bounds;
+}
+
+
+#pragma mark - tableView 代理
+
+-(NSObject *)modelAtIndexPath:(NSIndexPath *)indexPath{
+    id model =  self.viewModel.datas.firstObject;
+    NSIndexPath *tempIndexPath = indexPath;
+    if (indexPath.item > indexPath.row) {
+        tempIndexPath = [NSIndexPath indexPathForRow:indexPath.item inSection:indexPath.section];
+    }
+    if ([model isKindOfClass:[NSArray class]]) {
+        return self.viewModel.datas[tempIndexPath.section][tempIndexPath.row];
+    }
+    return self.viewModel.datas[tempIndexPath.row];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.datas.count;
+    if (self.viewModel.datas.count == 0) {
+        return 0;
+    }
+    id model = self.viewModel.datas.firstObject;
+    if ([model isKindOfClass:[NSArray class]]) {
+        return [self.viewModel.datas[section] count];
+    }
+    return [self.viewModel.datas count];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    id model = [self modelForIndexPath:indexPath];
-    NSString *reuseIdentifier = [self identifierForModel:model];
+    NSObject* model = [self modelAtIndexPath:indexPath];
+    NSString *reuseIdentifier = model.reuseIdentifer;
     Class class = NSClassFromString(reuseIdentifier);
     if ([class respondsToSelector:@selector(rowHeight)]) {
-        return [class rowHeight];
+        return [[class performSelector:@selector(rowHeight)] floatValue];
     }
     return UITableViewAutomaticDimension;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    if ([self.datas.firstObject isKindOfClass:[NSArray class]]) {
-        return self.datas.count;
+    if (self.viewModel.datas.count == 0) {
+        return 0;
+    }
+    id model = self.viewModel.datas.firstObject;
+    if ([model isKindOfClass:[NSArray class]]) {
+        return self.viewModel.datas.count;
     }
     return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    id model = [self modelForIndexPath:indexPath];
-    NSString *reuseIdentifier = [self identifierForModel:model];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    NSObject *model = [self modelAtIndexPath:indexPath];
+    NSString *reuseIdentifier = model.reuseIdentifer;
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     if ([cell respondsToSelector:@selector(updateUIWithModel:)]) {
         [cell performSelector:@selector(updateUIWithModel:) withObject:model];
     }
-    if ([cell respondsToSelector:@selector(onClickItemWithTag:attaches:)]) {
+    if ([cell respondsToSelector:@selector(clickItemOnCellWithTag)]) {
         __weak typeof(self) weakSelf = self;
         void (^block)(NSInteger tag,id attaches) = ^(NSInteger tag,id attaches){
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            [strongSelf onClickItemWithTag:tag attaches:attaches];
+            [strongSelf clickItemOnCellWithTag:tag attaches:attaches];
         };
-        [cell setValue:block forKey:@"onClickItemWithTag"];
+        [cell setValue:block forKey:@"clickItemOnCellWithTag"];
     }
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
@@ -69,28 +108,16 @@
     return cell;
 }
 
--(NSString *)identifierForModel:(id )model{
-    NSString *reuseIdentifier;
-    if ([model identifier]) {
-        reuseIdentifier = [model identifier];
-    }else{
-        reuseIdentifier = NSStringFromClass([model class]);
-    }
-    return reuseIdentifier;
-}
 
--(id)modelForIndexPath:(NSIndexPath *)indexPath{
-    id model;
-    if ([self.datas.firstObject isKindOfClass:[NSArray class]]) {
-        model = self.datas[indexPath.section][indexPath.row];
-    }else{
-        model = self.datas[indexPath.row];
-    }
-    return model;
-}
-
--(void)onClickItemWithTag:(NSInteger)tag attaches:(id)attaches{
+-(void)clickItemOnCellWithTag:(NSInteger)tag attaches:(id)attaches{
     
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self didClickCellAtIndexPath:indexPath];
+}
+
+-(void)didClickCellAtIndexPath:(NSIndexPath*)indexPath{
+    
+}
 @end

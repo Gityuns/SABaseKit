@@ -1,23 +1,39 @@
 //
-//  SAEmptyView.m
+//  SALoadingView.m
 //  SABaseKit
 //
 //  Created by mac on 2022/8/5.
 //
 
-#import "SAEmptyView.h"
+#import "SALoadingView.h"
 #import "Masonry/Masonry.h"
 
-@interface SAEmptyView ()
+@interface SALoadingView ()
 
+@property (nonatomic, strong) NSMutableDictionary *notices;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *noticeLabel;
 @end
 
-@implementation SAEmptyView
+@implementation SALoadingView
+
+-(NSMutableDictionary *)notices{
+    if (_notices == nil) {
+        _notices = [[NSMutableDictionary alloc]initWithDictionary:@{
+            @(SALoadingStateLoading).description: @"正在加载···",
+            @(SALoadingStateEmpty).description: @"呀！啥也没有哦~",
+            @(SALoadingStateError).description: @"呜呜，网络开小差哦",
+        }];
+    }
+    return _notices;
+}
 
 -(instancetype)init{
-    self = [super initWithFrame:CGRectZero];
+    return [self initWithFrame:CGRectZero];
+}
+
+-(instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
     if (self) {
         [self loadSubViews];
     }
@@ -50,22 +66,25 @@
         make.left.right.bottom.mas_equalTo(0);
         make.top.equalTo(self.imageView.mas_bottom).offset(20);
     }];
+    self.state = SALoadingStateLoading;
 }
 
--(void)setState:(SAEmptyState)state{
-    if (state == SAEmptyStateSucc) {
+-(void)setState:(SALoadingState)state{
+    if (state == SALoadingStateDone) {
         self.hidden = YES;
     }
     self.hidden = NO;
-    if (self.state != SAEmptyStateError) {
+    if (self.state != SALoadingStateError) {
         self.imageView.image = [self imageWithName:@"icon_state_empty"];
     }else{
         self.imageView.image = [self imageWithName:@"icon_state_error"];
     }
+    NSString *notice = [self.notices objectForKey:@(state).description];
+    self.noticeLabel.text = notice;
 }
 
--(void)setNotice:(NSString *)notice{
-    self.noticeLabel.text =  notice;
+-(void)setNotice:(NSString * _Nonnull)notice forState:(SALoadingState)state{
+    [self.notices setObject:notice forKey:@(state).description];
 }
 
 -(UIImage *)imageWithName:(NSString *)name{

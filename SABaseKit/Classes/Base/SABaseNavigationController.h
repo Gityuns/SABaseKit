@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SABaseNavigationController : UINavigationController
 
+@property (nonatomic, weak) UIViewController *rootViewController;
 @end
 
 NS_ASSUME_NONNULL_END

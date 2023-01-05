@@ -44,4 +44,15 @@
 -(void)cornerWithRadius:(CGFloat)radius size:(CGSize)size corners:(UIRectCorner)corners{
     [self cornerWithRadius:radius size:size corners:corners color:[UIColor clearColor]];
 }
+
+-(void)shadowColor:(UIColor *)color size:(CGSize)size cornerRadius:(CGFloat)raduis{
+    [self shadowColor:color size:size cornerRadius:raduis opacity:1];
+}
+
+-(void)shadowColor:(UIColor *)color size:(CGSize)size cornerRadius:(CGFloat)raduis opacity:(CGFloat)opacity{
+    self.layer.shadowColor = color.CGColor;
+    self.layer.shadowOffset = size;
+    self.layer.shadowRadius =  raduis;
+    self.layer.shadowOpacity = opacity;
+}
 @end

@@ -17,4 +17,8 @@
 -(void)setReuseIdentifer:(NSString *)reuseIdentifer{
     objc_setAssociatedObject(self, "reuseIdentifer", reuseIdentifer, OBJC_ASSOCIATION_COPY);
 }
+
+-(void)setValue:(id)value forUndefinedKey:(NSString *)key{
+    
+}
 @end

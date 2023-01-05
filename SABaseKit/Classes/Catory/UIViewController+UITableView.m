@@ -6,8 +6,9 @@
 //
 
 #import "UIViewController+UITableView.h"
-#import "NSObject+ReuseIdentifer.h"
+#import "NSObject+Property.h"
 #import <objc/runtime.h>
+#import "SABaseTableViewCell.h"
 
 @implementation UIViewController (UITableView)
 
@@ -15,24 +16,22 @@
 -(UITableView *)tableView{
     UITableView *tableView = (UITableView *)objc_getAssociatedObject(self, "tableView");
     if (tableView == nil) {
-        tableView = [[UITableView alloc]initWithFrame:self.tableFrame];
-        tableView.delegate = self;
-        tableView.dataSource = self;
+        tableView = [self createTableView];
         self.tableView = tableView;
+        self.scrollView = tableView;
     }
+    return tableView;
+}
+
+-(UITableView *)createTableView{
+    UITableView *tableView = [[UITableView alloc]initWithFrame:self.tableFrame];
+    tableView.delegate = self;
+    tableView.dataSource = self;
     return tableView;
 }
 
 -(void)setTableView:(UITableView *)tableView{
     objc_setAssociatedObject(self, "tableView", tableView, OBJC_ASSOCIATION_RETAIN);
-}
-
--(void)setViewModel:(SABaseViewModel *)viewModel{
-    objc_setAssociatedObject(self, "viewModel", viewModel, OBJC_ASSOCIATION_RETAIN);
-}
-
--(SABaseViewModel *)viewModel{
-    return (SABaseViewModel *)objc_getAssociatedObject(self, "viewModel");
 }
 
 -(CGRect)tableFrame{
@@ -42,16 +41,12 @@
 
 #pragma mark - tableView 代理
 
--(NSObject *)modelAtIndexPath:(NSIndexPath *)indexPath{
+-(NSObject *)tableViewModelAtIndexPath:(NSIndexPath *)indexPath{
     id model =  self.viewModel.datas.firstObject;
-    NSIndexPath *tempIndexPath = indexPath;
-    if (indexPath.item > indexPath.row) {
-        tempIndexPath = [NSIndexPath indexPathForRow:indexPath.item inSection:indexPath.section];
-    }
     if ([model isKindOfClass:[NSArray class]]) {
-        return self.viewModel.datas[tempIndexPath.section][tempIndexPath.row];
+        return self.viewModel.datas[indexPath.section][indexPath.row];
     }
-    return self.viewModel.datas[tempIndexPath.row];
+    return self.viewModel.datas[indexPath.row];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -66,7 +61,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSObject* model = [self modelAtIndexPath:indexPath];
+    NSObject* model = [self tableViewModelAtIndexPath:indexPath];
     NSString *reuseIdentifier = model.reuseIdentifer;
     Class class = NSClassFromString(reuseIdentifier);
     if ([class respondsToSelector:@selector(rowHeight)]) {
@@ -87,7 +82,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSObject *model = [self modelAtIndexPath:indexPath];
+    NSObject *model = [self tableViewModelAtIndexPath:indexPath];
     NSString *reuseIdentifier = model.reuseIdentifer;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
     if ([cell respondsToSelector:@selector(updateUIWithModel:)]) {
@@ -119,5 +114,10 @@
 
 -(void)didClickCellAtIndexPath:(NSIndexPath*)indexPath{
     
+}
+
+#pragma mark -- 注册cell
+-(void)registerCellWithClassName:(NSString *)className{
+    [self.tableView registerClass:NSClassFromString(className) forCellReuseIdentifier:className];
 }
 @end

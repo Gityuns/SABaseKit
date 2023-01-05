@@ -5,7 +5,7 @@
 //  Created by mac on 2022/8/5.
 //
 
-#import "NSFileManager+Path.h"
+#import "NSFileManager+FilePath.h"
 
 @implementation NSFileManager (FilePath)
 

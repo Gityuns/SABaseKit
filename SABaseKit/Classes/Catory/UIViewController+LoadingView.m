@@ -1,18 +1,24 @@
 //
-//  UIViewController+SALoadingView.m
+//  UIViewController+LoadingView.m
 //  SABaseKit
 //
 //  Created by mac on 2022/8/5.
 //
 
-#import "UIViewController+SALoadingView.h"
+#import "UIViewController+LoadingView.h"
 #import <objc/runtime.h>
 #import "Masonry/Masonry.h"
 
-@implementation UIViewController (SALoadingView)
+@implementation UIViewController (LoadingView)
 
 -(SALoadingView *)loadingView{
-    return  (SALoadingView *)objc_getAssociatedObject(self, "loadingView");
+    SALoadingView *loadingView =(SALoadingView *)objc_getAssociatedObject(self, "loadingView");
+    if (loadingView == nil) {
+        loadingView = [[SALoadingView alloc]initWithFrame:[self loadingViewFrame]];
+        [self.view addSubview:loadingView];
+        self.loadingView = loadingView;
+    }
+    return loadingView;
 }
 
 -(void)setLoadingView:(SALoadingView *)loadingView{
@@ -25,23 +31,18 @@
 
 -(void)setLoadingState:(SALoadingState)loadingState{
     objc_setAssociatedObject(self, "loadingState", @(loadingState), OBJC_ASSOCIATION_ASSIGN);
+    self.loadingView.state = loadingState;
+}
+
+-(CGRect)loadingViewFrame{
+    return self.view.bounds;
 }
 
 -(void)showEmptyViewIn:(UIView *)container{
-    if (self.loadingView ) {
-        return;
-    }
-    self.loadingView = [[SALoadingView alloc]init];
+    self.loadingView = [[SALoadingView alloc]initWithFrame:container.bounds];
     [container addSubview:self.loadingView];
-    if ([container isKindOfClass:[UIScrollView class]]) {
-        [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(container);
-            make.width.height.equalTo(container);
-        }];
-    }else{
-        [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.top.bottom.mas_equalTo(0);
-        }];
-    }
+    [self.loadingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsZero);
+    }];
 }
 @end

@@ -6,26 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SABaseViewModel.h"
+#import "UIViewController+MJRefresh.h"
+#import "UIViewController+Property.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol TableViewCellProtocol <NSObject>
-
-@optional
-
--(void)updateUIWithModel:(id)model;
-
-+(CGFloat)rowHeight;
-// 点击cell上的按钮的回调事件
-@property (nonatomic, copy) void (^clickItemOnCellWithTag)(NSInteger tag, id attaches);
-
-@end
-
-
 @interface UIViewController (UITableView)<UITableViewDelegate, UITableViewDataSource>
-
-@property (nonatomic, strong) SABaseViewModel *viewModel;
 
 @property (nonatomic, strong) UITableView *tableView;
 // 点击cell上的按钮的回调事件
@@ -33,12 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 // 设置table的frame
 -(CGRect)tableFrame;
 // 获取对应的model
--(id)modelAtIndexPath:(NSIndexPath *)indexPath;
+-(NSObject *)tableViewModelAtIndexPath:(NSIndexPath *)indexPath;
 // 点击cell事件
 -(void)didClickCellAtIndexPath:(NSIndexPath*)indexPath;
+#pragma mark -- 注册cell
+-(void)registerCellWithClassName:(NSString *)className;
 @end
-
-
 
 NS_ASSUME_NONNULL_END
 

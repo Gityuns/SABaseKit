@@ -10,8 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UIViewController (MJRefresh)
-// 0 tableView  1 collectionView
-@property (nonatomic, assign) NSInteger scrollType;
+
+@property (nonatomic, weak) UIScrollView *scrollView;
 
 /// 展示下拉刷新
 @property (nonatomic, assign) BOOL enableHeaderRefresh;
@@ -19,9 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL enableFooterLoadMore;
 
 /// 刷新
--(void)mj_refresh;
+-(void)refreshData;
 /// 加载更多
--(void)mj_loadMore;
+-(void)requestMoreData;
 
 @end
 

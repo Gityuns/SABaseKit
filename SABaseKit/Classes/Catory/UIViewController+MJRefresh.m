@@ -10,8 +10,6 @@
 #import "UIViewController+UITableView.h"
 #import <objc/runtime.h>
 
-static const int pageSize = 10;
-
 static const char * headerRefresh = "enableHeaderRefresh";
 
 static const char * footerLoadMore = "enableFooterLoadMore";
@@ -40,27 +38,29 @@ static const char * footerLoadMore = "enableFooterLoadMore";
     return [objc_getAssociatedObject(self, footerLoadMore) boolValue];
 }
 
+-(void)setScrollView:(UIScrollView *)scrollView{
+    objc_setAssociatedObject(self, "scrollView", scrollView, OBJC_ASSOCIATION_ASSIGN);
+}
+
+-(UIScrollView *)scrollView{
+    return (UIScrollView *)objc_getAssociatedObject(self, "scrollView");
+}
 
 -(void)configHeaderRefresh{
-    if (self.scrollType == 0 ) {
-        self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(mj_refresh)];
-    }else{
-        
-    }
+    self.scrollView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshData)];
 }
 
 -(void)configFooterLoadMore{
-    if (self.scrollType == 0) {
-        self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(mj_loadMore)];;
-    }
+    self.scrollView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(requestMoreData)];
 }
 
 
--(void)mj_refresh{
+/// 刷新
+-(void)refreshData{
     
 }
-
--(void)mj_loadMore{
+/// 加载更多
+-(void)requestMoreData{
     
 }
 

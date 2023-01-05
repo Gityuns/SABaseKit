@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) id model;
 
-@property (nonatomic, copy) void (^clickItemOnCellWithTag)(NSInteger tag, id attaches);
+@property (nonatomic, copy) void (^clickItemOnCellWithTag)(NSInteger tag, id _Nullable attaches);
 
 -(void)loadUI;
 

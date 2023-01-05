@@ -1,5 +1,5 @@
 //
-//  UIViewController+SALoadingView.h
+//  UIViewController+LoadingView.h
 //  SABaseKit
 //
 //  Created by mac on 2022/8/5.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIViewController (SALoadingView)
+@interface UIViewController (LoadingView)
 
 @property (nonatomic, strong) SALoadingView *loadingView;
 
@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void)showEmptyViewIn:(UIView *)container;
 
+-(CGRect)loadingViewFrame;
 @end
 
 NS_ASSUME_NONNULL_END

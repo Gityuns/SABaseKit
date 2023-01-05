@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SABaseKit'
-  s.version          = '0.1.3'
+  s.version          = '0.1.4'
   s.summary          = 'A short description of SABaseKit.'
 
 # This description is used to generate tags and improve search results.
@@ -35,10 +35,11 @@ TODO: Add long description of the pod here.
   s.resources = ['SABaseKit/SABaseKit.bundle']
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.dependency 'AFNetworking', '~>4.0.1'
-  s.dependency 'SDWebImage','~>5.12.2'
-  s.dependency 'Masonry','~>1.1.0'
-  s.dependency 'MJExtension', '~>3.4.1'
+  s.dependency 'AFNetworking'
+  s.dependency 'SDWebImage'
+  s.dependency 'Masonry'
+  s.dependency 'MJExtension'
   s.dependency 'SVProgressHUD'
-  s.dependency 'MJRefresh', '~>3.7.5'
+  s.dependency 'MJRefresh'
+  s.dependency 'IQKeyboardManager'
 end

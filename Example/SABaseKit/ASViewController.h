@@ -19,6 +19,3 @@
 
 @end
 
-@interface ASTableViewCell : UITableViewCell
-
-@end

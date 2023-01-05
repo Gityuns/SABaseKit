@@ -10,6 +10,8 @@
 #import "ASUserModel.h"
 #import "SABaseKit.h"
 #import "SAViewModel.h"
+#import "IQKeyboardManager.h"
+#import "Masonry.h"
 
 @implementation CellModel
 
@@ -26,35 +28,19 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib
-    self.title = @"SABaseKit";
-    [self.view addSubview:self.tableView];
-    self.tableView.top = 88;
-    self.tableView.height = self.view.frame.size.height - 188;
-    self.viewModel = [[SAViewModel alloc]init];
-    [self.viewModel requestData:^{
-            
-    } failure:^(NSString * _Nonnull errMsg) {
-            
-    }];
+    self.title = @"SABaseKit"; 
+
 }
 
 
-
+-(CGRect)loadingViewFrame{
+    return self.view.bounds;
+}
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-@end
-
-@implementation ASTableViewCell
-
-- (void)updateUIWithModel:(nonnull id)model {
-    self.textLabel.text = [model title];
-    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-}
-
 
 @end

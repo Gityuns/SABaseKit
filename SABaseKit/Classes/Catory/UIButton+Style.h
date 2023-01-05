@@ -9,17 +9,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, ImagePosition) {
-    left = 0,
-    right,
-    top,
-    bottom,
+typedef NS_ENUM(NSInteger, UIButtonStyle) {
+    UIButtonStyleLeft = 0,
+    UIButtonStyleRight,
+    UIButtonStyleTop,
+    UIButtonStyleBottom,
 };
 
-@interface UIButton (Position)
+@interface UIButton (Style)
 
 /// button 图片 和标题样式， 使用时需要先设置标题 和 图片
-@property (nonatomic, assign) ImagePosition position;
+@property (nonatomic, assign) UIButtonStyle buttonStyle;
 
 @end
 

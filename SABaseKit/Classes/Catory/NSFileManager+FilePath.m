@@ -1,5 +1,5 @@
 //
-//  NSFileManager+Path.m
+//  NSFileManager+FilePath.m
 //  SABaseKit
 //
 //  Created by mac on 2022/8/5.
@@ -7,7 +7,7 @@
 
 #import "NSFileManager+Path.h"
 
-@implementation NSFileManager (Path)
+@implementation NSFileManager (FilePath)
 
 + (NSURL *)documentsURL {
     return [[[NSFileManager defaultManager]

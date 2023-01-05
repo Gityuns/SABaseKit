@@ -8,10 +8,10 @@
 #import "UIButton+Position.h"
 #import <objc/runtime.h>
 
-@implementation UIButton (Position)
+@implementation UIButton (Style)
 
-- (void)setPosition:(ImagePosition)position{
-    objc_setAssociatedObject(self, "position", @(position), OBJC_ASSOCIATION_ASSIGN);
+- (void)setButtonStyle:(UIButtonStyle)buttonStyle{
+    objc_setAssociatedObject(self, "buttonStyle", @(buttonStyle), OBJC_ASSOCIATION_ASSIGN);
     UIImage *image = self.imageView.image;
     CGSize imageSize = image.size;
     NSString *title = self.titleLabel.text;
@@ -25,16 +25,16 @@
     CGFloat imageHeight = imageSize.height;
     CGFloat midWidth = (textWidth+imageWidth)/2;
     CGFloat midHeight = (textHeight + imageHeight)/2;
-    switch (position) {
-        case right:
+    switch (buttonStyle) {
+        case UIButtonStyleRight:
             titleEdgeInset = UIEdgeInsetsMake(0, -imageWidth, 0, imageWidth);
             imageEdgeInset = UIEdgeInsetsMake(0, textWidth, 0, -textWidth);
             break;
-        case top:{
+        case UIButtonStyleTop:{
             titleEdgeInset = UIEdgeInsetsMake(midHeight-textHeight/2, -(midWidth - textWidth/2), -(midHeight-textHeight/2), (midWidth - textWidth/2));
             imageEdgeInset = UIEdgeInsetsMake(-(midHeight - textHeight/2), midWidth-imageWidth/2, (midHeight - textHeight/2), imageWidth/2-midWidth);
         }break;
-        case bottom:{
+        case UIButtonStyleBottom:{
             titleEdgeInset = UIEdgeInsetsMake(-(midHeight-textHeight/2), -(midWidth - textWidth/2), (midHeight-textHeight/2), (midWidth - textWidth/2));
             imageEdgeInset = UIEdgeInsetsMake((midHeight - textHeight/2), midWidth-imageWidth/2, -(midHeight - textHeight/2), imageWidth/2-midWidth);
         } break;
@@ -45,7 +45,7 @@
     [self setImageEdgeInsets:imageEdgeInset];
 }
 
--(ImagePosition)position{
-    return (NSInteger)objc_getAssociatedObject(self, "position");
+-(UIButtonType)buttonType{
+    return (NSInteger)objc_getAssociatedObject(self, "buttonType");
 }
 @end

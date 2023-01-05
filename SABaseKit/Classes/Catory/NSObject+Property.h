@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSObject (ReuseIdentifer)
+@interface NSObject (Property)
 
 @property (nonatomic,copy) NSString *reuseIdentifer;
 @end

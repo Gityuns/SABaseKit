@@ -1,14 +1,14 @@
 //
-//  NSObject+ReuseIdentifer.m
+//  NSObject+Property.m
 //  SABaseKit
 //
 //  Created by 赵郧陕 on 2023/1/3.
 //
 
-#import "NSObject+ReuseIdentifer.h"
+#import "NSObject+Property.h"
 #import <objc/runtime.h>
 
-@implementation NSObject (ReuseIdentifer)
+@implementation NSObject (Property)
 
 -(NSString *)reuseIdentifer{
     return (NSString *)objc_getAssociatedObject(self, "reuseIdentifer");

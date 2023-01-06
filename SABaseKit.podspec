@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = Gityuns
+  s.description      = "Gityuns 修改内容：1、UICollectionView 只用1个cell时左对齐；2、pod文件按文件夹分组"
 TODO: Add long description of the pod here.
                        DESC
 

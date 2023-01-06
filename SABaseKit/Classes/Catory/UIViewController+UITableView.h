@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)didClickCellAtIndexPath:(NSIndexPath*)indexPath;
 #pragma mark -- 注册cell
 -(void)registerCellWithClassName:(NSString *)className;
+-(void)regisetrCellWithNibName:(NSString *)nibName;
 @end
 
 NS_ASSUME_NONNULL_END

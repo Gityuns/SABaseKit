@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(UIEdgeInsets)insetForSectionAtIndex:(NSInteger)section;
 #pragma mark -- 注册cell
 -(void)registerCellWithClassName:(NSString *)className;
+-(void)regisetrCellWithNibName:(NSString *)NibName;
 @end
 
 NS_ASSUME_NONNULL_END

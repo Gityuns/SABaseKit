@@ -120,4 +120,7 @@
 -(void)registerCellWithClassName:(NSString *)className{
     [self.tableView registerClass:NSClassFromString(className) forCellReuseIdentifier:className];
 }
+-(void)regisetrCellWithNibName:(NSString *)nibName{
+    [self.tableView registerNib:[UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]] forCellReuseIdentifier:nibName];
+}
 @end

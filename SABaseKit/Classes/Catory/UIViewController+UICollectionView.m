@@ -165,4 +165,7 @@
 -(void)registerCellWithClassName:(NSString *)className{
     [self.collectionView registerClass:NSClassFromString(className) forCellWithReuseIdentifier:className];
 }
+-(void)regisetrCellWithNibName:(NSString *)nibName{
+    [self.collectionView registerNib:[UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:nibName];
+}
 @end

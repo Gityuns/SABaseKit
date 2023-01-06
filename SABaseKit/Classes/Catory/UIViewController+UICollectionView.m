@@ -8,13 +8,22 @@
 #import "UIViewController+UICollectionView.h"
 #import "SABaseCollectionViewCell.h"
 #import "NSObject+Property.h"
-#import "objc/runtime.h"
+#import "objc/message.h"
 #import "SAConfig.h"
 
 @implementation UIViewController (UICollectionView)
 
 -(UICollectionViewLayout *)flowLayout{
-    return [UICollectionViewFlowLayout new];
+    UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
+    // 设置collectionView的布局模式
+    SEL sel = NSSelectorFromString(@"_setRowAlignmentsOptions:");
+    if ([flowLayout respondsToSelector:sel]) {
+       ((void(*)(id,SEL,NSDictionary*)) objc_msgSend)(flowLayout,sel, @{
+        @"UIFlowLayoutCommonRowHorizontalAlignmentKey":@(NSTextAlignmentLeft),
+        @"UIFlowLayoutLastRowHorizontalAlignmentKey" : @(NSTextAlignmentLeft),
+        @"UIFlowLayoutRowVerticalAlignmentKey" : @(NSTextAlignmentCenter)});
+    }
+    return flowLayout;
 }
 
 -(void)setCollectionView:(UICollectionView *)collectionView{

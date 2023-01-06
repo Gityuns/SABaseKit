@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'SABaseKit'
-  s.version          = '0.1.4'
+  s.version          = '0.1.5'
   s.summary          = 'A short description of SABaseKit.'
 
 # This description is used to generate tags and improve search results.
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = <<-DESC
+  s.description      = Gityuns
 TODO: Add long description of the pod here.
                        DESC
 
@@ -34,7 +34,7 @@ TODO: Add long description of the pod here.
   
   s.resources = ['SABaseKit/SABaseKit.bundle']
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
+  s.public_header_files = 'Pod/Classes/**/*.h'
   s.dependency 'AFNetworking'
   s.dependency 'SDWebImage'
   s.dependency 'Masonry'
